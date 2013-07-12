@@ -35,6 +35,7 @@ describe Tweetag::Collector do
 
   describe "#display" do
     it "displays tweets properly" do
+      pending
     end
   end
 
