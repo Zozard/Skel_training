@@ -1,10 +1,12 @@
 module Tweetag
   class Collector
-    def collects
 
+    def collect
+    
     end
 
-    def displays
+
+    def display
 
     end
 
