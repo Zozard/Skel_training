@@ -6,16 +6,19 @@ describe Tweetag::Collector do
     
     it "collects tweets from the accounts we set" do
       
-      retriever = Tweetag::Collector.new 
-      # le compte qu'on veut est prédéfini dans Collector.accounts
-      
-      retriever.collect
-      
-      retriever.result_acc.each do |cur|
-        retriever.accounts.should include(cur)
+      retriever = Tweetag::Collector.new("z0zard","bbird")  
+      # retriever.accounts = ["z0zard"] et retriever.hashtag = "bbird"
+      retriever.results = retriever.collect
+      retriever.results.should be_instance_of(Array)
+      # Array<Tweetag::Result> plus précisemment
+
+
+      retriever.results.each do |current|
+        current.should be_instance_of(Tweetag::Result)
+        current.author.should be_instance_of(String)
+        current.tweet.should be_instance_of(String)
+        retriever.account.should include(current.author)
       end
-      # on placera dans result_acc les comptes
-      # des tweets qu'on a récupéré
 
     end
 
