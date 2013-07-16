@@ -29,10 +29,8 @@ module Tweetag
 
 
       tweets_info=query.statuses
-      # ^^^^^^^^^^^^^^^^^^^^^^^ ceci est un Array<Twitter::Tweet>
-     
+      r = Result.new  
 
-      r = Result.new
 
       tweets_info.each_with_index do |tweet, index|
         r.text = tweet.text
@@ -40,23 +38,23 @@ module Tweetag
         @results << r
       end
 
-
     end
 
-
-    def display
-
+    def output
+      @output ||= Output.new
     end
-
   end
 
   class Result
     
     attr_accessor :author, :text
-    
+   
+    def initialize
+    end
+
+
     def print
     end
   end
-
-
+  
 end
