@@ -3,12 +3,17 @@ require 'twitter'
 module Tweetag
   class Collector
 
-    attr_accessor :accounts, :hashtag, :result, :result_acc, :result_tweets
-    def initialize
+    attr_accessor :account, :hashtag, :results
 
-      @accounts = ["z0zard"]
+    def initialize(account, hashtag)
+
+      @account = "z0zard"
       @hashtag = "bbird"
-      
+
+      @results = Array.new
+     
+      # définition des credentials
+
       Twitter.configure do |config|
         config.consumer_key = "KgdRthRd0H1LvTcYMxBxJQ"
         config.consumer_secret = "dQGaEcbPPIbnM4On6eyHNrYwp1lEPGv8vM3RlxLt8" 
@@ -20,28 +25,21 @@ module Tweetag
     def collect
 
       # faisons la requete 
-      query = Twitter.search("##{@hashtag}from:#{@accounts[0]}}", :result_type => "recent")
-      # ^^^^^^^^^^ ceci est un Twitter::SearchResults
+      query = Twitter.search("##{@hashtag} from:#{@account}}", :result_type => "recent")
 
 
-      # preparons la variable result_acc
-      # qui doit contenir les comptes auteurs 
-      # des tweets qu'on a reçu
-      tab_tweets=query.statuses
+      tweets_info=query.statuses
       # ^^^^^^^^^^^^^^^^^^^^^^^ ceci est un Array<Twitter::Tweet>
-      @result_acc = Array.new
+     
 
-      tab_tweets.each do |cur|
-        @result_acc<<cur
+      r = Result.new
+
+      tweets_info.each_with_index do |tweet, index|
+        r.text = tweet.text
+        r.author = tweet.from_user
+        @results << r
       end
 
-      # preparons la variable result_tweets
-
-      @result_tweets = Array.new
-
-      tab_tweets.each do |cur|
-        @result_tweets<<cur
-      end
 
     end
 
@@ -51,4 +49,14 @@ module Tweetag
     end
 
   end
+
+  class Result
+    
+    attr_accessor :author, :text
+    
+    def print
+    end
+  end
+
+
 end
