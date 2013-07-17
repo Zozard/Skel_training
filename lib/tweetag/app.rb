@@ -3,15 +3,17 @@ require 'twitter'
 module Tweetag
   class Collector
 
-    attr_accessor :account, :hashtag, :results
+    attr_accessor :preset_account, :preset_hashtag, :results
 
-    def initialize(account, hashtag)
+    def initialize(output, preset_account, preset_hashtag)
 
-      @account = account
-      @hashtag = hashtag
+      @preset_account = preset_account
+      @preset_hashtag = preset_hashtag
+
+      @output = output
 
       @results = Array.new
-     
+
       # définition des credentials
 
       Twitter.configure do |config|
@@ -25,14 +27,14 @@ module Tweetag
     def collect
 
       # faisons la requete 
-      query = Twitter.search("##{@hashtag} from:#{@account}}", :result_type => "recent")
+      query = Twitter.search("##{@preset_hashtag} from:#{@preset_account}}", :result_type => "recent")
 
 
       tweets_info=query.statuses
-      r = Result.new  
 
 
-      tweets_info.each_with_index do |tweet, index|
+      tweets_info.each do |tweet|
+        r = Result.new
         r.text = tweet.text
         r.author = tweet.from_user
         @results << r
@@ -40,18 +42,28 @@ module Tweetag
 
     end
 
-  end
-
-  class Result
-    
-    attr_accessor :author, :text
-   
-    def initialize
-    end
-
-
     def print
+
+      @results.each do |tweet|
+        @output.puts('Author :')
+        @output.puts tweet.author
+        @output.puts('Tweet :')
+        @output.puts tweet.text
+      end
+    
     end
+
   end
-  
+
 end
+
+class Result
+
+  attr_accessor :author, :text
+
+  def initialize
+  end
+
+
+end
+
