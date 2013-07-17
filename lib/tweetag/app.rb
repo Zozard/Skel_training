@@ -7,8 +7,8 @@ module Tweetag
 
     def initialize(account, hashtag)
 
-      @account = "z0zard"
-      @hashtag = "bbird"
+      @account = account
+      @hashtag = hashtag
 
       @results = Array.new
      
@@ -40,9 +40,6 @@ module Tweetag
 
     end
 
-    def output
-      @output ||= Output.new
-    end
   end
 
   class Result
